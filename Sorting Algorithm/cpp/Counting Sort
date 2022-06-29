@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+void countSort(int array[], int size) {
+
+  int output[10];
+  int count[10];
+  int max = array[0];
+
+  for (int a = 1; a < size; a++) {
+    if (array[a] > max)
+      max = array[a];
+  }
+
+  for (int a = 0; a <= max; ++a) {
+    count[a] = 0;
+  }
+
+  for (int a = 0; a < size; a++) {
+    count[array[a]]++;
+  }
+
+  for (int a = 1; a <= max; a++) {
+    count[a] += count[a - 1];
+  }
+
+  for (int a = size - 1; a >= 0; a--) {
+    output[count[array[a]] - 1] = array[a];
+    count[array[a]]--;
+  }
+ 
+  for (int a = 0; a < size; a++) {
+    array[a] = output[a];
+  }
+}
+
+void printArray(int array[], int size) {
+  for (int a = 0; a < size; a++)
+    cout << array[a] << " ";
+  cout << endl;
+}
+
+int main() {
+  int array[] = {9, 2, 6, 8, 3, 7, 1};
+  int n = sizeof(array) / sizeof(array[0]);
+  countSort(array, n);
+  printArray(array, n);
+}
