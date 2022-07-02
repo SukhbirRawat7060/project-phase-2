@@ -1,0 +1,100 @@
+#include <bits/stdc++.h>
+
+struct Edge {
+  int l; 
+  int m;  
+  int n;  
+};
+
+
+struct Graph {
+  int V;       
+  int E;        
+  struct Edge* edge; 
+};
+
+struct Graph* createGraph(int V, int E) {
+  struct Graph* graph = new Graph;
+  graph->V = V;  
+  graph->E = E;  
+
+
+  graph->edge = new Edge[E];
+  return graph;
+}
+
+void printArr(int arr[], int size) {
+  int i;
+  for (i = 0; i < size; i++) {
+    printf("%d ", arr[i]);
+  }
+  printf("\n");
+}
+
+void BellmanFord(struct Graph* graph, int l) {
+  int V = graph->V;
+  int E = graph->E;
+  int dist[V];
+
+  for (int i = 0; i < V; i++)
+    dist[i] = INT_MAX;
+
+  dist[l] = 0;
+
+  for (int i = 1; i <= V - 1; i++) {
+    for (int j = 0; j < E; j++) {
+ 
+      int l = graph->edge[j].l;
+      int m = graph->edge[j].m;
+      int n = graph->edge[j].n;
+      if (dist[l] != INT_MAX && dist[l] + n < dist[m])
+        dist[m] = dist[l] + n;
+    }
+  }
+
+  for (int i = 0; i < E; i++) {
+    int l = graph->edge[i].l;
+    int m = graph->edge[i].m;
+    int n = graph->edge[i].n;
+    if (dist[l] != INT_MAX && dist[l] + n < dist[m]) {
+      printf("Graph contains negative w cycle");
+      return;
+    }
+  }
+
+  printArr(dist, V);
+
+  return;
+}
+
+int main() {
+ 
+  int V = 5;  
+  int E = 8;  
+
+  struct Graph* graph = createGraph(V, E);
+
+  graph->edge[0]. l = 0;
+  graph->edge[0]. m = 1;
+  graph->edge[0]. n = 5;
+
+  graph->edge[1]. l= 0;
+  graph->edge[1]. m = 2;
+  graph->edge[1]. n = 4;
+
+  graph->edge[2]. l = 1;
+  graph->edge[2]. m = 3;
+  graph->edge[2]. n = 3;
+
+  graph->edge[3]. l = 2;
+  graph->edge[3]. m = 1;
+  graph->edge[3]. n = 6;
+
+  graph->edge[4]. l = 3;
+  graph->edge[4]. m = 2;
+  graph->edge[4]. n = 2;
+
+  BellmanFord(graph, 0);
+
+  return 0;
+}
