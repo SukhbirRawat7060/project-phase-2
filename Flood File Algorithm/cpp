@@ -1,0 +1,52 @@
+#include<iostream>
+using namespace std;
+
+#define M 8
+#define N 8
+
+void floodFillUtil(int screen[][N], int a, int b, int prevC, int newC)
+{
+
+    if (a < 0 || a >= M || b < 0 || b >= N)
+        return;
+    if (screen[a][b] != prevC)
+        return;
+    if (screen[a][b] == newC) 
+        return; 
+ 
+    screen[a][b] = newC;
+ 
+    floodFillUtil(screen, a+1, b, prevC, newC);
+    floodFillUtil(screen, a-1, b, prevC, newC);
+    floodFillUtil(screen, a, b+1, prevC, newC);
+    floodFillUtil(screen, a, b-1, prevC, newC);
+}
+
+void floodFill(int screen[][N], int a, int b, int newC)
+{
+    int prevC = screen[a][b];
+    floodFillUtil(screen, a, b, prevC, newC);
+}
+
+int main()
+{
+    int screen[M][N] = {{1, 1, 1, 1, 1, 1, 1, 1},
+                      {1, 1, 1, 1, 1, 1, 0, 0},
+                      {1, 0, 0, 1, 1, 0, 1, 1},
+                      {1, 2, 2, 2, 2, 0, 1, 0},
+                      {1, 1, 1, 2, 2, 0, 1, 0},
+                      {1, 1, 1, 2, 2, 2, 2, 0},
+                      {1, 1, 1, 1, 1, 2, 1, 1},
+                      {1, 1, 1, 1, 1, 2, 2, 1},
+                     };
+    int a = 4, b = 4, newC = 3;
+    floodFill(screen, a, b, newC);
+ 
+    cout << "Updated screen after call to floodFill: \n";
+    for (int i=0; i<M; i++)
+    {
+        for (int j=0; j<N; j++)
+           cout << screen[i][j] << " ";
+        cout << endl;
+    }
+}
