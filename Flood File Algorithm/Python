@@ -1,0 +1,57 @@
+from collections import deque
+
+row = [-1, -1, -1, 0, 0, 1, 1, 1]
+col = [-1, 0, 1, -1, 1, -1, 0, 1]
+def isSafe(mat, l, m, target):
+    return 0 <= l < len(mat) and 0 <= m < len(mat[0]) and mat[l][m] == target
+
+def floodfill(mat, l, m, replacement):
+
+    if not mat or not len(mat):
+        return
+
+    q = deque()
+    q.append((l, m))
+
+    target = mat[l][m]
+ 
+    if target == replacement:
+        return
+
+    while q:
+
+        l, m = q.popleft()
+
+        mat[l][m] = replacement
+
+        for m in range(len(row)):
+
+            if isSafe(mat, l + row[m], m + col[m], target):
+
+                q.append((l + row[m], m + col[m]))
+ 
+ 
+if __name__ == '__main__':
+
+    mat = [
+            ['Y', 'Y', 'Y', 'G', 'G', 'G', 'G', 'G', 'G', 'G'],
+            ['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'G', 'X', 'X', 'X'],
+            ['G', 'G', 'G', 'G', 'G', 'G', 'G', 'X', 'X', 'X'],
+            ['W', 'W', 'W', 'W', 'W', 'G', 'G', 'G', 'G', 'X'],
+            ['W', 'R', 'R', 'R', 'R', 'R', 'G', 'X', 'X', 'X'],
+            ['W', 'W', 'W', 'R', 'R', 'G', 'G', 'X', 'X', 'X'],
+            ['W', 'B', 'W', 'R', 'R', 'R', 'R', 'R', 'R', 'X'],
+            ['W', 'B', 'B', 'B', 'B', 'R', 'R', 'X', 'X', 'X'],
+            ['W', 'B', 'B', 'X', 'B', 'B', 'B', 'B', 'X', 'X'],
+            ['W', 'B', 'B', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
+    ]
+ 
+    l = 3
+    m = 9
+
+    replacement = 'C'
+
+    floodfill(mat, l, m, replacement)
+
+    for r in mat:
+        print(r)
